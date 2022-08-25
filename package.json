@@ -1,0 +1,36 @@
+{
+  "name": "i18n-less-translate",
+  "version": "0.1.0",
+  "private": false,
+  "license": "MIT",
+  "main": "lib/index.ts",
+  "types": "lib/index.ts",
+  "exports": {
+    "import": "./esm/index.js",
+    "require": "./cjs/index.js"
+  },
+  "scripts": {
+    "build": "node build.js"
+  },
+  "dependencies": {
+    "up-dir-env": "^0.0.6",
+    "esbuild": "^0.14.45",
+    "fs-extra": "^10.1.0",
+    "node-fetch": "^3.2.6"
+  },
+  "devDependencies": {
+    "@types/fs-extra": "^9.0.13",
+    "@types/react-window": "^1.8.5"
+  },
+  "bin": {
+    "i18n-less-translate": "./bin.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ymzuiku/i18n-less-translate.git"
+  },
+  "bugs": {
+    "url": "git+https://github.com/ymzuiku/i18n-less-translate.git"
+  },
+  "homepage": "git+https://github.com/ymzuiku/i18n-less-translate.git"
+}
