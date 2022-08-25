@@ -103,7 +103,7 @@ console.log(i18n["Please input phone"]);
 默认会读取用户浏览器的语言，如果要切换，可以执行：
 
 ```typescript
-import { i18nLocal } from "gewu-i18n";
+import { i18nLocal } from "i18n-less-translate";
 
 // 注意，切换后需要刷新页面
 i18nLocal.setNowLanguage("zh");

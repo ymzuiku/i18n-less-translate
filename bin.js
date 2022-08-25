@@ -12,7 +12,18 @@ const loadFech = async () => {
   }
 };
 
-const languagesText = ["en", "zh", "cht", "kor", "fra", "de", "jp", "spa", "ru", "it"];
+const languagesText = [
+  "en",
+  "zh",
+  "cht",
+  "kor",
+  "fra",
+  "de",
+  "jp",
+  "spa",
+  "ru",
+  "it",
+];
 
 const getItem = (key, items) => {
   const { en, zh, cht, kor, fra, de, jp, spa, ru, it } = items;
@@ -79,7 +90,12 @@ const fetchTranslate = async (lang, q) => {
         "Content-Type": "application/json;charset=utf-8",
       },
     }).then((v) => v.json());
-    if (res && res.trans_result && res.trans_result[0] && res.trans_result[0].dst) {
+    if (
+      res &&
+      res.trans_result &&
+      res.trans_result[0] &&
+      res.trans_result[0].dst
+    ) {
       const dst = res.trans_result[0].dst;
       caches.cache[key] = dst;
       return dst;
@@ -165,14 +181,14 @@ const i18nCli = async (inputDir) => {
     text += getItem(key, allTranslate[key]);
   });
   const file = `
-/* Don't edit this file, it's generate from https://www.npmjs.com/package/gewu-i18n */
+/* Don't edit this file, it's generate from https://www.npmjs.com/package/i18n-less-translate */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { i18nLocal } from "gewu-i18n";
+import { i18nLocal } from "i18n-less-translate";
 import lang from "./lang";
 export const i18n: typeof lang = {${text}} as any;
 `.trim();
   const serveLang = `
-/* Don't edit this file, it's generate from https://www.npmjs.com/package/gewu-i18n */
+/* Don't edit this file, it's generate from https://www.npmjs.com/package/i18n-less-translate */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import lang from "./lang";
 export const serveLang = { ...lang };
