@@ -147,7 +147,7 @@ const i18nCli = async (inputDir) => {
     allowOverwrite: true,
   });
 
-  const langSouces = require(resolve(__dirname, "temp_lang.js")).default;
+  const langSouces = require(resolve(__dirname, tempFile)).default;
   const keys = Object.keys(langSouces);
 
   for (const key of keys) {
@@ -206,6 +206,5 @@ Object.keys(i18nKeys).forEach((k) => {
 
 const argv = process.argv.splice(2);
 const entryDir = argv[0];
-const envPath = argv[1] || "./";
 config();
 i18nCli(entryDir);
