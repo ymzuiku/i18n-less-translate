@@ -118,12 +118,12 @@ i18n 做了一个巧妙的设计，如果要实现后端的多语言，后端只
 以下是后端应该返回的错误类型：
 
 ```typescript
-// ./i18n/serveLang 是自动生成的一系列多语言的key
-import { serveLang } from "./i18n/serveLang";
+// ./i18n/i18nKeys 是自动生成的一系列多语言的key
+import { i18nKeys } from "./i18n/i18nKeys";
 
-console.log(serveLang["Please input phone"]); // 输出值和key一致： Please input phone
+console.log(i18nKeys["Please input phone"]); // 输出值和key一致： Please input phone
 
 app.use("/example", () => {
-  throw Error(serveLang["Please input phone"]);
+  throw Error(i18nKeys["Please input phone"]);
 });
 ```

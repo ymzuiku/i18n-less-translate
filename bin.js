@@ -187,19 +187,19 @@ import { i18nLocal } from "i18n-less-translate";
 import lang from "./lang";
 export const i18n: typeof lang = {${text}} as any;
 `.trim();
-  const serveLang = `
+  const i18nKeys = `
 /* Don't edit this file, it's generate from https://www.npmjs.com/package/i18n-less-translate */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import lang from "./lang";
-export const serveLang = { ...lang };
+export const i18nKeys = { ...lang };
 
-Object.keys(serveLang).forEach((k) => {
-  (serveLang as never as Record<string, string>)[k] = k;
+Object.keys(i18nKeys).forEach((k) => {
+  (i18nKeys as never as Record<string, string>)[k] = k;
 });
   `.trim();
   fs.writeJSONSync(cachePath, caches.cache, { spaces: 2 });
   fs.writeFileSync(resolve(process.cwd(), inputDir, "index.ts"), file);
-  fs.writeFileSync(resolve(process.cwd(), inputDir, "serveLang.ts"), serveLang);
+  fs.writeFileSync(resolve(process.cwd(), inputDir, "i18nKeys.ts"), i18nKeys);
   fs.rmSync(resolve(__dirname, "temp_lang.js"));
 };
 
