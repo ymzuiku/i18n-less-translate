@@ -7,6 +7,7 @@ coverage
 .eslintcache
 tmp
 vendor
+cache.json
 
 node_modules
 **/node_modules
