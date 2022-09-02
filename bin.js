@@ -130,9 +130,10 @@ const i18nCli = async (inputDir) => {
     throw `Not found: .env: translate_appid, translate_password`;
   }
 
+  const tempFile = `temp_lang${String(Math.random()).replace("0.", "")}.js`;
   await require("esbuild").build({
     entryPoints: [resolve(process.cwd(), inputDir, "lang.ts")],
-    outfile: resolve(__dirname, "temp_lang.js"),
+    outfile: resolve(__dirname, tempFile),
     bundle: true,
     target: ["node16"],
     format: "cjs",
@@ -200,7 +201,7 @@ Object.keys(i18nKeys).forEach((k) => {
   fs.writeJSONSync(cachePath, caches.cache, { spaces: 2 });
   fs.writeFileSync(resolve(process.cwd(), inputDir, "index.ts"), file);
   fs.writeFileSync(resolve(process.cwd(), inputDir, "i18nKeys.ts"), i18nKeys);
-  fs.rmSync(resolve(__dirname, "temp_lang.js"));
+  fs.rmSync(resolve(__dirname, tempFile));
 };
 
 const argv = process.argv.splice(2);
