@@ -111,10 +111,16 @@ const fetchTranslate = async (lang, q) => {
 };
 
 const allTranslate = {};
+let cachePath = "";
 
 const i18nCli = async (inputDir) => {
   await loadFech();
-  let cachePath = resolve(__dirname, "./cache.json");
+  if (!cachePath) {
+    console.error(`Not set cache path, please set like:`);
+    console.error(`i18n-less-translate ./i18n --catch ~/i18n-cache.json`);
+    return;
+  }
+  console.log("i18n cache path:", cachePath);
   if (!fs.existsSync(cachePath)) {
     fs.writeFileSync(cachePath, "{}");
   }
@@ -208,3 +214,10 @@ const argv = process.argv.splice(2);
 const entryDir = argv[0];
 config();
 i18nCli(entryDir);
+
+for (let i = 0; i < argv.length; i++) {
+  const v = argv[i];
+  if (v === "--cache") {
+    cachePath = resolve(process.cwd(), argv[i + 1]);
+  }
+}

@@ -31,7 +31,7 @@ const langMap = {
 const keys = Object.keys(langMap);
 
 if (typeof window !== "undefined" && navigator) {
-  const old = localStorage.getItem("language");
+  const old = localStorage.getItem("i18n-less-language");
   if (old) {
     (nowLang as string) = old;
   } else {
@@ -67,7 +67,11 @@ const languagesText = {
   it: "Italia",
 };
 
-type II18fn = (languages: Langs, params?: Record<string, Record<keyof Langs, string>>, defLang?: keyof Langs) => string;
+type II18fn = (
+  languages: Langs,
+  params?: Record<string, Record<keyof Langs, string>>,
+  defLang?: keyof Langs
+) => string;
 
 interface II18fnProp {
   // 使用 cli 进行生成多语言
@@ -81,7 +85,7 @@ interface II18fnProp {
 export const i18nLocal: II18fn & II18fnProp = (
   languages: Langs,
   params?: Record<string, Record<keyof Langs, string>>,
-  defLang?: keyof Langs,
+  defLang?: keyof Langs
 ): string => {
   let lang = defLang || (i18nLocal.getLanguage() as keyof Langs);
   let str = languages[lang];
@@ -107,7 +111,7 @@ export const i18nLocal: II18fn & II18fnProp = (
 
 i18nLocal.setNowLanguage = (v: keyof Langs) => {
   nowLang = v;
-  localStorage.setItem("language", nowLang);
+  localStorage.setItem("i18n-less-language", nowLang);
 };
 
 i18nLocal.getLanguage = (): keyof Langs => {
