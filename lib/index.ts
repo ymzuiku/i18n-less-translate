@@ -67,6 +67,14 @@ const languagesText = {
   it: "Italia",
 };
 
+const needUpper = {
+  en: true,
+  fra: true,
+  de: true,
+  ru: true,
+  spa: true,
+} as Record<string, boolean>;
+
 type II18fn = (
   languages: Langs,
   params?: Record<string, Record<keyof Langs, string>>,
@@ -81,6 +89,10 @@ interface II18fnProp {
   isEn: () => boolean;
   languagesText: typeof languagesText & Record<string, string>;
 }
+
+const upperFirst = (str: string) => {
+  return str[0].toUpperCase() + str.substring(1);
+};
 
 export const i18nLocal: II18fn & II18fnProp = (
   languages: Langs,
@@ -105,6 +117,9 @@ export const i18nLocal: II18fn & II18fnProp = (
         str = str.replace(exp, params[k][lang]);
       }
     }
+  }
+  if (needUpper[lang]) {
+    str = upperFirst(str);
   }
   return str;
 };
