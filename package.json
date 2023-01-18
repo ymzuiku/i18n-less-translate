@@ -1,6 +1,6 @@
 {
   "name": "i18n-less-translate",
-  "version": "0.1.14",
+  "version": "0.1.15",
   "private": false,
   "license": "MIT",
   "main": "lib/index.ts",
