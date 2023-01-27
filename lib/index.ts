@@ -48,7 +48,6 @@ if (!is_ssr) {
     for (let i = 0; i < keys.length; i++) {
       const v = keys[i];
       if (language.indexOf(v) === 0) {
-        console.log(langMap, v);
         nowLang = (langMap as any)[v];
         break;
       }
