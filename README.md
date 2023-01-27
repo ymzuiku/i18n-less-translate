@@ -79,13 +79,13 @@ it: "Italia",
 确保 i18n 目录下有 lang.ts 文件, 然后执行
 
 ```sh
-i18n-less-translate ./i18n
+i18n-less-translate ./i18n --cache ./i18n_cache.json
 ```
 
 如果 `.env` 路径不在执行目录（monorepo 类型的工程）, 可以指定相对 `.env` 路径
 
 ```sh
-i18n-less-translate ./i18n ../../.env
+i18n-less-translate ./i18n ../../.env  --cache ./i18n_cache.json
 ```
 
 ## 在工程中使用翻译好的代码
@@ -126,4 +126,35 @@ console.log(i18nKeys["Please input phone"]); // 输出值和key一致： Please 
 app.use("/example", () => {
   throw Error(i18nKeys["Please input phone"]);
 });
+```
+
+## SSR 中解决水合问题
+
+参考: https://nextjs.org/docs/messages/react-hydration-error
+
+在项目中添加一个一个 useI18n.ts 的文件
+
+```tsx
+import { i18nLocal } from "i18n-less-translate";
+import { useEffect, useState } from "react";
+import { i18n, i18nReload } from "./index";
+
+const cache = {
+  render: false,
+};
+
+export function useI18n() {
+  if (!cache.render) {
+    cache.render = true;
+    Object.assign(i18n, i18nReload("en"));
+  }
+  const [lng, setLng] = useState(i18n);
+  useEffect(() => {
+    if (!i18nLocal.isEn()) {
+      Object.assign(i18n, i18nReload(i18nLocal.getLanguage()));
+      setLng({ ...i18n });
+    }
+  }, []);
+  return lng as typeof i18n;
+}
 ```

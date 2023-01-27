@@ -29,8 +29,12 @@ const langMap = {
 };
 
 const keys = Object.keys(langMap);
+const is_ssr =
+  typeof window === "undefined" ||
+  typeof window.localStorage === "undefined" ||
+  typeof window.navigator === "undefined";
 
-if (typeof window !== "undefined" && navigator) {
+if (!is_ssr) {
   const old = localStorage.getItem("i18n-less-language");
   if (old) {
     (nowLang as string) = old;
@@ -44,15 +48,13 @@ if (typeof window !== "undefined" && navigator) {
     for (let i = 0; i < keys.length; i++) {
       const v = keys[i];
       if (language.indexOf(v) === 0) {
+        console.log(langMap, v);
         nowLang = (langMap as any)[v];
         break;
       }
     }
   }
 }
-
-// eslint-disable-next-line @typescript-eslint/unbound-method
-const strOf = Object.prototype.toString;
 
 const languagesText = {
   en: "English",
@@ -75,16 +77,12 @@ const needUpper = {
   spa: true,
 } as Record<string, boolean>;
 
-type II18fn = (
-  languages: Langs,
-  params?: Record<string, Record<keyof Langs, string>>,
-  defLang?: keyof Langs
-) => string;
+type II18fn = (languages: Langs, defLang?: keyof Langs) => string;
 
 interface II18fnProp {
   // 使用 cli 进行生成多语言
   setNowLanguage: (v: keyof Langs) => void;
-  getLanguage: () => string;
+  getLanguage: () => keyof Langs;
   isZh: () => boolean;
   isEn: () => boolean;
   languagesText: typeof languagesText & Record<string, string>;
@@ -96,10 +94,9 @@ const upperFirst = (str: string) => {
 
 export const i18nLocal: II18fn & II18fnProp = (
   languages: Langs,
-  params?: Record<string, Record<keyof Langs, string>>,
   defLang?: keyof Langs
 ): string => {
-  let lang = defLang || (i18nLocal.getLanguage() as keyof Langs);
+  let lang = defLang || i18nLocal.getLanguage();
   let str = languages[lang];
   if (!str) {
     lang = "en";
@@ -109,15 +106,7 @@ export const i18nLocal: II18fn & II18fnProp = (
     console.error("i8n not find");
     str = "[i18n not find]";
   }
-  if (params) {
-    for (const k in params) {
-      const exp = new RegExp(`__${k}__`, "g");
 
-      if (strOf.call(params[k]) !== "[object String]") {
-        str = str.replace(exp, params[k][lang]);
-      }
-    }
-  }
   if (needUpper[lang]) {
     str = upperFirst(str);
   }
@@ -126,7 +115,9 @@ export const i18nLocal: II18fn & II18fnProp = (
 
 i18nLocal.setNowLanguage = (v: keyof Langs) => {
   nowLang = v;
-  localStorage.setItem("i18n-less-language", nowLang);
+  if (!is_ssr) {
+    localStorage.setItem("i18n-less-language", nowLang);
+  }
 };
 
 i18nLocal.getLanguage = (): keyof Langs => {
@@ -135,5 +126,4 @@ i18nLocal.getLanguage = (): keyof Langs => {
 
 i18nLocal.isZh = () => nowLang == "zh";
 i18nLocal.isEn = () => nowLang == "en";
-
 i18nLocal.languagesText = languagesText;

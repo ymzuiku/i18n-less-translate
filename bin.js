@@ -28,7 +28,7 @@ const languagesText = [
 const getItem = (key, items) => {
   const { en, zh, cht, kor, fra, de, jp, spa, ru, it } = items;
   return `
-  "${key}": i18nLocal({
+  "${key}": {
     en: \`${en}\`,
     zh: \`${zh}\`,
     cht: \`${cht}\`,
@@ -39,7 +39,7 @@ const getItem = (key, items) => {
     spa: \`${spa}\`,
     ru: \`${ru}\`,
     it: \`${it}\`,
-  }),
+  }[lng],
   `;
 };
 
@@ -190,9 +190,17 @@ const i18nCli = async (inputDir) => {
   const file = `
 /* Don't edit this file, it's generate from https://www.npmjs.com/package/i18n-less-translate */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { i18nLocal } from "i18n-less-translate";
+import { i18nLocal, Langs } from "i18n-less-translate";
 import lang from "./lang";
-export const i18n: typeof lang = {${text}} as any;
+type TypeLang = typeof lang;
+
+export const i18nReload = (lng: keyof Langs):TypeLang=>{
+  return {
+    ${text}
+  } as any;
+}
+
+export const i18n: typeof lang = i18nReload(i18nLocal.getLanguage());
 `.trim();
   const i18nKeys = `
 /* Don't edit this file, it's generate from https://www.npmjs.com/package/i18n-less-translate */
