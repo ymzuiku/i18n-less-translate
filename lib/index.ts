@@ -127,3 +127,8 @@ i18nLocal.getLanguage = (): keyof Langs => {
 i18nLocal.isZh = () => nowLang == "zh";
 i18nLocal.isEn = () => nowLang == "en";
 i18nLocal.languagesText = languagesText;
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function lang(obj: Partial<Langs>): any {
+  return obj;
+}

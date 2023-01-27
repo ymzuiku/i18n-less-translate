@@ -29,11 +29,13 @@ touch i18n/lang.ts
 ```
 
 ```typescript
+import { lang } from "i18n-less-translate";
+
 export default {
-  "web title": {
+  "web title": lang({
     zh: "某系统",
     en: "One OS",
-  },
+  }),
   "Please input phone": "请输入手机号",
   "Incorrect phone format": "手机号格式不正确",
   "Please input send code": "请输入验证码",
@@ -67,11 +69,11 @@ it: "Italia",
 如果要覆盖默认翻译语言, 可以使用此方式声明某个语言不进行翻译:
 
 ```typescript
-"web title": {
+import { lang } from "i18n-less-translate";
+"web title": lang({
   zh: "某系统",
   en: "One OS",
-  // 注意，这里将类型描述为string，因为实际在使用过程中，所有值都是翻译好的string，而不是对象
-} as never as string,
+}),
 ```
 
 ## 翻译多国语言
