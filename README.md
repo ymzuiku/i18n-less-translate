@@ -90,6 +90,12 @@ i18n-less-translate ./i18n --cache ./i18n_cache.json
 i18n-less-translate ./i18n ../../.env  --cache ./i18n_cache.json
 ```
 
+如果要编译 golang 的 i18nKey 常量:
+
+```sh
+i18n-less-translate ./i18n ../../.env  --cache ./i18n_cache.json --golang ../your-golang-pkg
+```
+
 ## 在工程中使用翻译好的代码
 
 ```typescript

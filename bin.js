@@ -3,6 +3,41 @@ const fs = require("fs-extra");
 const { resolve } = require("path");
 const crypto = require("crypto");
 const { config } = require("up-dir-env");
+const path = require("path");
+
+function getLastDir(url) {
+  const dirs = path.dirname(url).split("/");
+  return dirs[dirs.length - 1];
+}
+
+function urlToName(url) {
+  const parseStr = (str, split) => {
+    const parts = str.split(split);
+    const nameParts = [];
+
+    for (let i = 0; i < parts.length; i++) {
+      const part = parts[i];
+
+      if (part.length > 0) {
+        const namePart = part.charAt(0).toUpperCase() + part.slice(1).toLowerCase();
+        nameParts.push(namePart);
+      }
+    }
+
+    return nameParts.join("");
+  };
+  url = parseStr(url, "/");
+  url = parseStr(url, " ");
+  return url;
+}
+
+function upperFirst(url) {
+  return url[0].toUpperCase() + url.slice(1);
+}
+
+function lowerFirst(url) {
+  return url[0].toLowerCase() + url.slice(1);
+}
 
 const loadFech = async () => {
   if (!global.fetch) {
@@ -12,18 +47,7 @@ const loadFech = async () => {
   }
 };
 
-const languagesText = [
-  "en",
-  "zh",
-  "cht",
-  "kor",
-  "fra",
-  "de",
-  "jp",
-  "spa",
-  "ru",
-  "it",
-];
+const languagesText = ["en", "zh", "cht", "kor", "fra", "de", "jp", "spa", "ru", "it"];
 
 const getItem = (key, items) => {
   const { en, zh, cht, kor, fra, de, jp, spa, ru, it } = items;
@@ -90,12 +114,7 @@ const fetchTranslate = async (lang, q) => {
         "Content-Type": "application/json;charset=utf-8",
       },
     }).then((v) => v.json());
-    if (
-      res &&
-      res.trans_result &&
-      res.trans_result[0] &&
-      res.trans_result[0].dst
-    ) {
+    if (res && res.trans_result && res.trans_result[0] && res.trans_result[0].dst) {
       const dst = res.trans_result[0].dst;
       caches.cache[key] = dst;
       return dst;
@@ -112,6 +131,7 @@ const fetchTranslate = async (lang, q) => {
 
 const allTranslate = {};
 let cachePath = "";
+let golangPath = "";
 
 const i18nCli = async (inputDir) => {
   await loadFech();
@@ -184,8 +204,12 @@ const i18nCli = async (inputDir) => {
     fs.writeJSONSync(cachePath, caches.cache, { spaces: 2 });
   }
   let text = "";
+  let golangText = "";
   Object.keys(allTranslate).forEach((key) => {
     text += getItem(key, allTranslate[key]);
+    if (golangPath) {
+      golangText += `const ${urlToName(key)} = "${key}"\n`;
+    }
   });
   const file = `
 /* Don't edit this file, it's generate from https://www.npmjs.com/package/i18n-less-translate */
@@ -216,6 +240,14 @@ Object.keys(i18nKeys).forEach((k) => {
   fs.writeFileSync(resolve(process.cwd(), inputDir, "index.ts"), file);
   fs.writeFileSync(resolve(process.cwd(), inputDir, "i18nKeys.ts"), i18nKeys);
   fs.rmSync(resolve(__dirname, tempFile));
+
+  if (golangPath) {
+    const golangKeys = `package ${getLastDir(golangPath)}
+
+${golangText}
+    `;
+    fs.writeFileSync(golangPath, golangKeys, { spaces: 2 });
+  }
 };
 
 const argv = process.argv.splice(2);
@@ -227,5 +259,7 @@ for (let i = 0; i < argv.length; i++) {
   const v = argv[i];
   if (v === "--cache") {
     cachePath = resolve(process.cwd(), argv[i + 1]);
+  } else if (v === "--golang") {
+    golangPath = resolve(process.cwd(), argv[i + 1]);
   }
 }
