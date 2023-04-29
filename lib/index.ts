@@ -91,10 +91,7 @@ const upperFirst = (str: string) => {
   return str[0].toUpperCase() + str.substring(1);
 };
 
-export const i18nLocal: II18fn & II18fnProp = (
-  languages: Langs,
-  defLang?: keyof Langs
-): string => {
+export const i18nLocal: II18fn & II18fnProp = (languages: Langs, defLang?: keyof Langs): string => {
   let lang = defLang || i18nLocal.getLanguage();
   let str = languages[lang];
   if (!str) {
