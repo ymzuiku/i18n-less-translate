@@ -254,6 +254,8 @@ Object.keys(i18nKeys).forEach((k) => {
   if (golangPath) {
     const golangKeys = `package ${getLastDir(golangPath)}
 
+import "errors"
+
 ${golangText}
     `;
     fs.ensureDirSync(path.dirname(golangPath));
