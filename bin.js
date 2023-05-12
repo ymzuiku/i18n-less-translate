@@ -10,7 +10,7 @@ function getLastDir(url) {
   return dirs[dirs.length - 1];
 }
 
-export function safeSql(text) {
+function safeSql(text) {
   return text.replace(/(\/|\\|"|'|%| |:|-|`|\.|\||\|\|;|&|\[|\]|\{|\}|\(|\)|\n)/g, "_");
 }
 
