@@ -10,7 +10,11 @@ function getLastDir(url) {
   return dirs[dirs.length - 1];
 }
 
-function urlToName(url) {
+export function safeSql(text) {
+  return text.replace(/(\/|\\|"|'|%| |:|-|`|\.|\||\|\|;|&|\[|\]|\{|\}|\(|\)|\n)/g, "_");
+}
+
+function toSafeName(url) {
   const parseStr = (str, split) => {
     const parts = str.split(split);
     const nameParts = [];
@@ -19,7 +23,7 @@ function urlToName(url) {
       const part = parts[i];
 
       if (part.length > 0) {
-        const namePart = part.charAt(0).toUpperCase() + part.slice(1).toLowerCase();
+        const namePart = part.charAt(0).toUpperCase() + part.slice(1);
         nameParts.push(namePart);
       }
     }
@@ -28,6 +32,11 @@ function urlToName(url) {
   };
   url = parseStr(url, "/");
   url = parseStr(url, " ");
+  url = parseStr(url, "-");
+  url = parseStr(url, "'");
+  url = parseStr(url, "`");
+  url = parseStr(url, `"`);
+  url = safeSql(url);
   return url;
 }
 
@@ -208,7 +217,7 @@ const i18nCli = async (inputDir) => {
   Object.keys(allTranslate).forEach((key) => {
     text += getItem(key, allTranslate[key]);
     if (golangPath) {
-      golangText += `const ${urlToName(key)} = "${key}"\n`;
+      golangText += `var ${toSafeName(key)} = errors.New("${key}")\n`;
     }
   });
   const file = `
