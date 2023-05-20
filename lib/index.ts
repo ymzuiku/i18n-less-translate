@@ -11,6 +11,9 @@ export interface Langs {
   spa?: string;
   ru?: string;
   it?: string;
+  th?: string;
+  vie?: string;
+  pt?: string;
 }
 
 let nowLang = "" as keyof Langs;
@@ -26,6 +29,9 @@ const langMap = {
   es: "spa",
   ru: "ru",
   it: "it",
+  th: "th",
+  vi: "vie",
+  pt: "pt",
 };
 
 const keys = Object.keys(langMap);
@@ -66,6 +72,9 @@ const languagesText = {
   spa: "Española",
   ru: "русский",
   it: "Italia",
+  th: "ภาษาไทย",
+  vie: "Việt Nam",
+  pt: "Português",
 };
 
 const needUpper = {

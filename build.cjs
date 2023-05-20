@@ -2,8 +2,7 @@ const fs = require("fs");
 const path = require("path");
 const { build } = require("esbuild");
 
-const formDir =
-  "/Applications/source/work/amarkdown/packages/i18n-less-translate";
+const formDir = "/Applications/source/work/amarkdown/packages/i18n-less-translate";
 const toDir = "./";
 const ignores = ["node_modules", ".git", ".DS_Store", "package.json"];
 
@@ -68,16 +67,18 @@ function syncFiles(fileList, sourceDir, targetDir) {
   });
 }
 
-fs.watch(formDir, { recursive: true }, (eventType, filename) => {
-  if (/temp_lang/.test(filename)) {
-    return;
-  }
-  console.log(`Event type: ${eventType}, filename: ${filename}`);
+if (fs.existsSync(formDir)) {
+  fs.watch(formDir, { recursive: true }, (eventType, filename) => {
+    if (/temp_lang/.test(filename)) {
+      return;
+    }
+    console.log(`Event type: ${eventType}, filename: ${filename}`);
+    const fileList = getAllFiles(formDir);
+    syncFiles(fileList, formDir, toDir);
+    runBuild();
+  });
   const fileList = getAllFiles(formDir);
   syncFiles(fileList, formDir, toDir);
-  runBuild();
-});
+}
 
-const fileList = getAllFiles(formDir);
-syncFiles(fileList, formDir, toDir);
 runBuild();

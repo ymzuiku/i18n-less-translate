@@ -40,13 +40,13 @@ function toSafeName(url) {
   return url;
 }
 
-function upperFirst(url) {
-  return url[0].toUpperCase() + url.slice(1);
-}
+// function upperFirst(url) {
+//   return url[0].toUpperCase() + url.slice(1);
+// }
 
-function lowerFirst(url) {
-  return url[0].toLowerCase() + url.slice(1);
-}
+// function lowerFirst(url) {
+//   return url[0].toLowerCase() + url.slice(1);
+// }
 
 const loadFech = async () => {
   if (!global.fetch) {
@@ -56,10 +56,10 @@ const loadFech = async () => {
   }
 };
 
-const languagesText = ["en", "zh", "cht", "kor", "fra", "de", "jp", "spa", "ru", "it"];
+const languagesText = ["en", "zh", "cht", "kor", "fra", "de", "jp", "spa", "ru", "it", "th", "vie", "pt"];
 
 const getItem = (key, items) => {
-  const { en, zh, cht, kor, fra, de, jp, spa, ru, it } = items;
+  const { en, zh, cht, kor, fra, de, jp, spa, ru, it, th, vie, pt } = items;
   return `
   "${key}": {
     en: \`${en}\`,
@@ -72,6 +72,9 @@ const getItem = (key, items) => {
     spa: \`${spa}\`,
     ru: \`${ru}\`,
     it: \`${it}\`,
+    th: \`${th}\`,
+    vie: \`${vie}\`,
+    pt: \`${pt}\`,
   }[lng],
   `;
 };
