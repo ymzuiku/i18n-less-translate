@@ -77,61 +77,28 @@ const languagesText = {
   pt: "Português",
 };
 
-const needUpper = {
-  en: true,
-  fra: true,
-  de: true,
-  ru: true,
-  spa: true,
-} as Record<string, boolean>;
-
 type II18fn = (languages: Langs, defLang?: keyof Langs) => string;
 
 interface II18fnProp {
   // 使用 cli 进行生成多语言
   setNowLanguage: (v: keyof Langs) => void;
   getLanguage: () => keyof Langs;
-  isZh: () => boolean;
-  isEn: () => boolean;
   languagesText: typeof languagesText & Record<string, string>;
 }
 
-const upperFirst = (str: string) => {
-  return str[0].toUpperCase() + str.substring(1);
+// export const i18nLocal:  II18fnProp = (languages: Langs, defLang?: keyof Langs): string => {};
+export const i18nLocal = {
+  setNowLanguage: (v: keyof Langs) => {
+    nowLang = v;
+    if (!is_ssr) {
+      localStorage.setItem("i18n-less-language", nowLang);
+    }
+  },
+  getLanguage: (): keyof Langs => {
+    return nowLang;
+  },
+  languagesText,
 };
-
-export const i18nLocal: II18fn & II18fnProp = (languages: Langs, defLang?: keyof Langs): string => {
-  let lang = defLang || i18nLocal.getLanguage();
-  let str = languages[lang];
-  if (!str) {
-    lang = "en";
-    str = languages[lang];
-  }
-  if (!str) {
-    console.error("i8n not find");
-    str = "[i18n not find]";
-  }
-
-  if (needUpper[lang]) {
-    str = upperFirst(str);
-  }
-  return str;
-};
-
-i18nLocal.setNowLanguage = (v: keyof Langs) => {
-  nowLang = v;
-  if (!is_ssr) {
-    localStorage.setItem("i18n-less-language", nowLang);
-  }
-};
-
-i18nLocal.getLanguage = (): keyof Langs => {
-  return nowLang;
-};
-
-i18nLocal.isZh = () => nowLang == "zh";
-i18nLocal.isEn = () => nowLang == "en";
-i18nLocal.languagesText = languagesText;
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function lang(obj: Partial<Langs>): any {

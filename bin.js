@@ -40,9 +40,9 @@ function toSafeName(url) {
   return url;
 }
 
-// function upperFirst(url) {
-//   return url[0].toUpperCase() + url.slice(1);
-// }
+function upperFirst(url) {
+  return url[0].toUpperCase() + url.slice(1);
+}
 
 // function lowerFirst(url) {
 //   return url[0].toLowerCase() + url.slice(1);
@@ -62,19 +62,19 @@ const getItem = (key, items) => {
   const { en, zh, cht, kor, fra, de, jp, spa, ru, it, th, vie, pt } = items;
   return `
   "${key}": {
-    en: \`${en}\`,
-    zh: \`${zh}\`,
-    cht: \`${cht}\`,
-    kor: \`${kor}\`,
-    fra: \`${fra}\`,
-    de: \`${de}\`,
-    jp: \`${jp}\`,
-    spa: \`${spa}\`,
-    ru: \`${ru}\`,
-    it: \`${it}\`,
-    th: \`${th}\`,
-    vie: \`${vie}\`,
-    pt: \`${pt}\`,
+    en: \`${upperFirst(en)}\`,
+    fra: \`${upperFirst(fra)}\`,
+    de: \`${upperFirst(de)}\`,
+    ru: \`${upperFirst(ru)}\`,
+    spa: \`${upperFirst(spa)}\`,
+    zh: \`${upperFirst(zh)}\`,
+    cht: \`${upperFirst(cht)}\`,
+    kor: \`${upperFirst(kor)}\`,
+    jp: \`${upperFirst(jp)}\`,
+    it: \`${upperFirst(it)}\`,
+    th: \`${upperFirst(th)}\`,
+    vie: \`${upperFirst(vie)}\`,
+    pt: \`${upperFirst(pt)}\`,
   }[lng],
   `;
 };
