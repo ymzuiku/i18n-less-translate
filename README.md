@@ -166,3 +166,11 @@ export function useI18n() {
   return lng as typeof i18n;
 }
 ```
+
+### 不使用自动翻译
+
+添加参数: '--nofetch'
+
+```sh
+i18n-less-translate ./i18n --cache ./i18n_cache.json --nofetch
+```

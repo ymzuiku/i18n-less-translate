@@ -5,6 +5,8 @@ const crypto = require("crypto");
 const { config } = require("up-dir-env");
 const path = require("path");
 
+let nofetch = false;
+
 function getLastDir(url) {
   const dirs = path.dirname(url).split("/");
   return dirs[dirs.length - 1];
@@ -110,7 +112,7 @@ const fetchTranslate = async (lang, q) => {
   if (caches.cache[key]) {
     return caches.cache[key];
   }
-  if (!caches.appid || !caches.password) {
+  if (!nofetch && (!caches.appid || !caches.password)) {
     throw "Not found: appid, password";
   }
 
@@ -196,15 +198,14 @@ const i18nCli = async (inputDir) => {
     for (const langKind of languagesText) {
       const q = langSouces[key];
       if (typeof q === "object") {
-        if (q[langKind]) {
+        if (nofetch) {
+          data[langKind] = q[langKind] || q["en"] || q["zh"] || "no-have-i18n-text";
+        } else if (q[langKind]) {
           data[langKind] = q[langKind];
         } else {
           promises.push(fetchTranslate(langKind, q["zh"] || q["en"]));
           langs.push(langKind);
         }
-      } else {
-        langs.push(langKind);
-        promises.push(fetchTranslate(langKind, q));
       }
     }
     const list = await Promise.all(promises);
@@ -277,5 +278,7 @@ for (let i = 0; i < argv.length; i++) {
     cachePath = resolve(process.cwd(), argv[i + 1]);
   } else if (v === "--golang") {
     golangPath = resolve(process.cwd(), argv[i + 1]);
+  } else if (v === "--nofetch") {
+    nofetch = true;
   }
 }
