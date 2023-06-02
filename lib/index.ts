@@ -14,6 +14,7 @@ export interface Langs {
   th?: string;
   vie?: string;
   pt?: string;
+  id?: string;
 }
 
 let nowLang = "" as keyof Langs;
@@ -32,6 +33,7 @@ const langMap = {
   th: "th",
   vi: "vie",
   pt: "pt",
+  id: "id",
 };
 
 const keys = Object.keys(langMap);
@@ -75,16 +77,17 @@ const languagesText = {
   th: "ภาษาไทย",
   vie: "Việt Nam",
   pt: "Português",
+  id: "IndonesiaName",
 };
 
-type II18fn = (languages: Langs, defLang?: keyof Langs) => string;
+// type II18fn = (languages: Langs, defLang?: keyof Langs) => string;
 
-interface II18fnProp {
-  // 使用 cli 进行生成多语言
-  setNowLanguage: (v: keyof Langs) => void;
-  getLanguage: () => keyof Langs;
-  languagesText: typeof languagesText & Record<string, string>;
-}
+// interface II18fnProp {
+//   // 使用 cli 进行生成多语言
+//   setNowLanguage: (v: keyof Langs) => void;
+//   getLanguage: () => keyof Langs;
+//   languagesText: typeof languagesText & Record<string, string>;
+// }
 
 // export const i18nLocal:  II18fnProp = (languages: Langs, defLang?: keyof Langs): string => {};
 export const i18nLocal = {

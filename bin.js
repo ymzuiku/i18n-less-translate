@@ -57,10 +57,10 @@ const loadFech = async () => {
   }
 };
 
-let languagesText = ["en", "zh", "cht", "kor", "fra", "de", "jp", "spa", "ru", "it", "th", "vie", "pt"];
+let languagesText = ["en", "zh", "cht", "kor", "fra", "de", "jp", "spa", "ru", "it", "th", "vie", "pt", "id"];
 
 const getItem = (key, items) => {
-  const { en, zh, cht, kor, fra, de, jp, spa, ru, it, th, vie, pt } = items;
+  const { en, zh, cht, kor, fra, de, jp, spa, ru, it, th, vie, pt, id } = items;
   const lngs = new Set(languagesText);
   const text = [
     lngs.has("en") ? `en: \`${upperFirst(en)}\`` : "",
@@ -76,6 +76,7 @@ const getItem = (key, items) => {
     lngs.has("th") ? `th: \`${upperFirst(th)}\`` : "",
     lngs.has("vie") ? `vie: \`${upperFirst(vie)}\`` : "",
     lngs.has("pt") ? `pt: \`${upperFirst(pt)}\`` : "",
+    lngs.has("id") ? `id: \`${upperFirst(id)}\`` : "",
   ]
     .filter((v) => !!v)
     .join(",");
