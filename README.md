@@ -167,6 +167,14 @@ export function useI18n() {
 }
 ```
 
+### 只翻译指定的语言
+
+添加参数: '--lng'
+
+```sh
+i18n-less-translate ./i18n --cache ./i18n_cache.json --lng zh,en,th,vie
+```
+
 ### 不使用自动翻译
 
 添加参数: '--nofetch'

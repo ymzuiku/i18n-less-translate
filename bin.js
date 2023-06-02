@@ -43,12 +43,11 @@ function toSafeName(url) {
 }
 
 function upperFirst(url) {
+  if (!url) {
+    return url;
+  }
   return url[0].toUpperCase() + url.slice(1);
 }
-
-// function lowerFirst(url) {
-//   return url[0].toLowerCase() + url.slice(1);
-// }
 
 const loadFech = async () => {
   if (!global.fetch) {
@@ -58,26 +57,30 @@ const loadFech = async () => {
   }
 };
 
-const languagesText = ["en", "zh", "cht", "kor", "fra", "de", "jp", "spa", "ru", "it", "th", "vie", "pt"];
+let languagesText = ["en", "zh", "cht", "kor", "fra", "de", "jp", "spa", "ru", "it", "th", "vie", "pt"];
 
 const getItem = (key, items) => {
   const { en, zh, cht, kor, fra, de, jp, spa, ru, it, th, vie, pt } = items;
+  const lngs = new Set(languagesText);
+  const text = [
+    lngs.has("en") ? `en: \`${upperFirst(en)}\`` : "",
+    lngs.has("fra") ? `fra: \`${upperFirst(fra)}\`` : "",
+    lngs.has("de") ? `de: \`${upperFirst(de)}\`` : "",
+    lngs.has("ru") ? `ru: \`${upperFirst(ru)}\`` : "",
+    lngs.has("spa") ? `spa: \`${upperFirst(spa)}\`` : "",
+    lngs.has("zh") ? `zh: \`${upperFirst(zh)}\`` : "",
+    lngs.has("cht") ? `cht: \`${upperFirst(cht)}\`` : "",
+    lngs.has("kor") ? `kor: \`${upperFirst(kor)}\`` : "",
+    lngs.has("jp") ? `jp: \`${upperFirst(jp)}\`` : "",
+    lngs.has("it") ? `it: \`${upperFirst(it)}\`` : "",
+    lngs.has("th") ? `th: \`${upperFirst(th)}\`` : "",
+    lngs.has("vie") ? `vie: \`${upperFirst(vie)}\`` : "",
+    lngs.has("pt") ? `pt: \`${upperFirst(pt)}\`` : "",
+  ]
+    .filter((v) => !!v)
+    .join(",");
   return `
-  "${key}": {
-    en: \`${upperFirst(en)}\`,
-    fra: \`${upperFirst(fra)}\`,
-    de: \`${upperFirst(de)}\`,
-    ru: \`${upperFirst(ru)}\`,
-    spa: \`${upperFirst(spa)}\`,
-    zh: \`${upperFirst(zh)}\`,
-    cht: \`${upperFirst(cht)}\`,
-    kor: \`${upperFirst(kor)}\`,
-    jp: \`${upperFirst(jp)}\`,
-    it: \`${upperFirst(it)}\`,
-    th: \`${upperFirst(th)}\`,
-    vie: \`${upperFirst(vie)}\`,
-    pt: \`${upperFirst(pt)}\`,
-  }[lng],
+  "${key}": ({${text}} as any)[lng],
   `;
 };
 
@@ -280,5 +283,7 @@ for (let i = 0; i < argv.length; i++) {
     golangPath = resolve(process.cwd(), argv[i + 1]);
   } else if (v === "--nofetch") {
     nofetch = true;
+  } else if (v === "--lng") {
+    languagesText = argv[i + 1].split(",");
   }
 }
