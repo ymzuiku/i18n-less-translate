@@ -203,7 +203,8 @@ const i18nCli = async (inputDir) => {
       const q = langSouces[key];
       if (typeof q === "object") {
         if (nofetch) {
-          data[langKind] = q[langKind] || q["en"] || q["zh"] || "no-have-i18n-text";
+          const key = langKind + "__" + q;
+          data[langKind] = q[langKind] || caches.cache[key] || q["en"] || q["zh"] || "no-have-i18n-text";
         } else if (q[langKind]) {
           data[langKind] = q[langKind];
         } else {
