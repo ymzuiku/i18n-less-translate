@@ -1,13 +1,13 @@
 {
   "name": "i18n-less-translate",
-  "version": "0.2.24",
+  "version": "0.2.26",
   "private": false,
   "license": "MIT",
   "main": "lib/index.ts",
   "types": "lib/index.ts",
   "exports": {
-    "import": "./esm/index.js",
-    "require": "./cjs/index.js"
+    "import": "./esm/index.mjs",
+    "require": "./cjs/index.cjs"
   },
   "scripts": {
     "build": "node build.cjs"

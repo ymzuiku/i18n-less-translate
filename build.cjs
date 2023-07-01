@@ -18,7 +18,7 @@ const runBuild = () => {
     bundle: true,
     format: "cjs",
     external: Object.keys(dep),
-    outfile: "cjs/index.js",
+    outfile: "cjs/index.cjs",
     minify: true,
     loader: {
       ".svg": "dataurl",
@@ -31,7 +31,7 @@ const runBuild = () => {
     bundle: true,
     format: "esm",
     external: Object.keys(dep),
-    outfile: "esm/index.js",
+    outfile: "esm/index.mjs",
     minify: true,
     loader: {
       ".svg": "dataurl",
