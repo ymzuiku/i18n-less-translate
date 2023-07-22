@@ -17,6 +17,7 @@ function safeSql(text) {
 }
 
 function toSafeName(url) {
+  url = url.replace(/ /g, "_");
   const parseStr = (str, split) => {
     const parts = str.split(split);
     const nameParts = [];
@@ -33,13 +34,16 @@ function toSafeName(url) {
     return nameParts.join("");
   };
   url = parseStr(url, "/");
+  url = parseStr(url, ",");
+  url = parseStr(url, ".");
+  url = parseStr(url, "!");
   url = parseStr(url, " ");
   url = parseStr(url, "-");
   url = parseStr(url, "'");
   url = parseStr(url, "`");
   url = parseStr(url, `"`);
   url = safeSql(url);
-  return url;
+  return safeSql(url);
 }
 
 function upperFirst(url) {
